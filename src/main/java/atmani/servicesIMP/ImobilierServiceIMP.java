@@ -2,13 +2,16 @@ package atmani.servicesIMP;
 
 import java.util.Date;
 import java.util.Map;
-
+import java.util.Optional;
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 
 import atmani.JWT.CustomerUsersDetailsService;
 import atmani.JWT.JwtFilter;
@@ -23,7 +26,9 @@ import atmani.services.ImobilierService;
 import atmani.utils.CafeUtils;
 import atmani.utils.EmailUtils;
 
+
 @Service
+@Transactional
 public class ImobilierServiceIMP implements ImobilierService {
 
 	@Autowired
@@ -62,6 +67,45 @@ public class ImobilierServiceIMP implements ImobilierService {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@Override
+
+	public ResponseEntity<String> deleteImobilier(Integer id) throws ObjectOptimisticLockingFailureException {
+
+		System.out.println("12");
+		try {
+			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
+				Optional<Imobilier> optional = imobilierRepo.findById(id);
+				if (optional.isPresent() == true) {
+					System.out.println(optional.toString());
+
+					switch (optional.get().getType()) {
+					case ACHAT:
+						System.out.println("suppression d'achat"+id);
+						imobilierRepo.deleteById(id);
+						System.out.println(" cccccccccccccccc");
+						break;
+						
+					case LOCATION:
+						System.out.println("suppression de location");
+						//
+						
+					}
+					
+					return CafeUtils.getResponseEntity("Imobilier deleted successfully", HttpStatus.OK);
+				} else {
+					return CafeUtils.getResponseEntity("Imobilier id not found :/", HttpStatus.OK);
+				}
+			} else {
+				return CafeUtils.getResponseEntity(ImobilierConstents.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

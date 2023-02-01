@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Version;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -40,6 +41,7 @@ public class Imobilier implements Serializable {
 	
 	@Enumerated(EnumType.STRING)
 	private Type type;
+	
 
 	public int getId() {
 		return id;
@@ -130,6 +132,13 @@ public class Imobilier implements Serializable {
 
 	public Imobilier() {
 		super();
+	}
+
+	@Override
+	public String toString() {
+		return "Imobilier [id=" + id + ", title=" + title + ", description=" + description + ", price=" + price
+				+ ", available=" + available + ", adresse=" + adresse + ", surface=" + surface + ", Rooms=" + Rooms
+				+ ", type=" + type + "]";
 	}
 	
 	

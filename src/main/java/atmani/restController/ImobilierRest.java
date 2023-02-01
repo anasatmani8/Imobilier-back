@@ -47,10 +47,15 @@ public class ImobilierRest {
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	/*@GetMapping(path="/delete/{id}")
+	@GetMapping(path="/delete/{id}")
 
 	ResponseEntity<String> delete(@PathVariable Integer id){
-		
+		try {
+			return imobilierService.deleteImobilier(id);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-*/
+
 }
