@@ -1,10 +1,10 @@
 package atmani.servicesIMP;
 
-import java.util.ArrayList;
-import java.util.List;
+
+//import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,7 +173,7 @@ public class UserServiceIMP implements UserService {
 		return CafeUtils.getResponseEntity(ImobilierConstents .SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 */
-	private void sendMailToAllAdmin(String from, String status, String user, List<String> allAdmin) {
+/*	private void sendMailToAllAdmin(String from, String status, String user, List<String> allAdmin) {
 		allAdmin.remove(from);
 		if (status != null && status.equalsIgnoreCase("true")) {
 			emailUtils.sendSimpleMessage("Account aprouved", "User:- " + user + "\n is approved by \nADMIN:-" + from,
@@ -183,7 +183,7 @@ public class UserServiceIMP implements UserService {
 					allAdmin);
 		}
 
-	}
+	}*/
 
 	@Override
 	public ResponseEntity<String> checkToken() {

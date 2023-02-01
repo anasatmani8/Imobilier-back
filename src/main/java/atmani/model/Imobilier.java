@@ -1,12 +1,18 @@
 package atmani.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Imobilier implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -17,9 +23,23 @@ public class Imobilier implements Serializable {
 	
 	private String title;
 	
+	//private List<Blob> images;
+	
 	private String description;
 	
-	private boolean status;
+	
+	private double price;
+	
+	private boolean available;
+	
+	private String adresse;
+	
+	private int surface;
+	
+	private int Rooms;
+	
+	@Enumerated(EnumType.STRING)
+	private Type type;
 
 	public int getId() {
 		return id;
@@ -45,24 +65,67 @@ public class Imobilier implements Serializable {
 		this.description = description;
 	}
 
-	public boolean isStatus() {
-		return status;
+	
+
+	public double getPrice() {
+		return price;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
-	@Override
-	public String toString() {
-		return "Imobilier [id=" + id + ", title=" + title + ", description=" + description + ", status=" + status + "]";
+	public boolean isAvailable() {
+		return available;
 	}
 
-	public Imobilier(String title, String description, boolean status) {
+	public void setAvailable(boolean available) {
+		this.available = available;
+	}
+
+	public String getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
+
+	public int getSurface() {
+		return surface;
+	}
+
+	public void setSurface(int surface) {
+		this.surface = surface;
+	}
+
+	public int getRooms() {
+		return Rooms;
+	}
+
+	public void setRooms(int rooms) {
+		Rooms = rooms;
+	}
+
+	public Enum<Type> getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public Imobilier(String title, String description , double price, boolean available, String adresse,
+			int surface, int rooms, Type type) {
 		super();
 		this.title = title;
 		this.description = description;
-		this.status = status;
+		this.price = price;
+		this.available = available;
+		this.adresse = adresse;
+		this.surface = surface;
+		this.Rooms = rooms;
+		this.type = type;
 	}
 
 	public Imobilier() {

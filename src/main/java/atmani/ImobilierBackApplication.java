@@ -1,11 +1,15 @@
 package atmani;
 
+//import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-//import atmani.model.Imobilier;
-import atmani.model.User;
+
+/*import atmani.model.Achat;
+import atmani.model.Type;*/
+//import atmani.model.User;
 import atmani.repository.ImobilierRepo;
 import atmani.repository.UserRepo;
 
@@ -23,7 +27,10 @@ public class ImobilierBackApplication implements CommandLineRunner {
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) throws Exception {	
+		
+		/*Achat achat = new Achat("Appart yasmine", "naaaaaadya", 1450, true, "riad zitoune", 211, 4, Type.VENTE, new Date());
+		imobilierRepo.save(achat);*/
 		
 		//userRepo.save(new User("amine", "0661973770", "amine@gmail.com", "admin123", "true", "admin"));
 		
