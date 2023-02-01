@@ -25,6 +25,10 @@ public class Achat extends Imobilier {
 		super(title, description, price, available, adresse, surface, rooms, type);
 		this.dateAchat = dateAchat;
 	}
+
+	public Achat() {
+		super();
+	}
 	
 	
 

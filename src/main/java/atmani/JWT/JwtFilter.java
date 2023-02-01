@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			FilterChain filterChain) throws ServletException, IOException {
 		System.out.println("inside filter");
 
-		if (httpServletRequest.getServletPath().matches("/user/login|/user/forgetPassword|/user/signup|category/add")) {
+		if (httpServletRequest.getServletPath().matches("/user/login|/user/forgetPassword|/user/signup|imobilier/add")) {
 			/*
 			 * System.out.println("dofilter1"); String authorizationHeader =
 			 * httpServletRequest.getHeader("Authorization");

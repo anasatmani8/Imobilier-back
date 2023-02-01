@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO Auto-generated method stub
 		http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and().csrf()
 				.disable().authorizeRequests()
-				.antMatchers("/user/**", "/login/signup", "/user/forgetPassword")
+				.antMatchers("/user/**", "/login/signup", "/user/forgetPassword", "/imobilier/add")
 				.permitAll().anyRequest().authenticated().and().exceptionHandling().and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
