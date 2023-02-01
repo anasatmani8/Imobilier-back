@@ -31,5 +31,7 @@ public class Achat extends Imobilier {
 	}
 	
 	
+	
+	
 
 }

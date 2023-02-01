@@ -16,17 +16,19 @@ import atmani.JWT.JwtUtil;
 import atmani.constents.ImobilierConstents;
 import atmani.model.Achat;
 import atmani.model.Imobilier;
+import atmani.model.Location;
 import atmani.model.Type;
 import atmani.repository.ImobilierRepo;
 import atmani.services.ImobilierService;
 import atmani.utils.CafeUtils;
 import atmani.utils.EmailUtils;
+
 @Service
 public class ImobilierServiceIMP implements ImobilierService {
 
 	@Autowired
 	ImobilierRepo imobilierRepo;
-	
+
 	@Autowired
 	CustomerUsersDetailsService customerUsersDetailsService;
 
@@ -41,7 +43,6 @@ public class ImobilierServiceIMP implements ImobilierService {
 
 	Logger log = (Logger) LoggerFactory.getLogger(UserServiceIMP.class);
 
-	
 	@Override
 	public ResponseEntity<String> addImobilier(Map<String, String> requestMap) {
 		// TODO Auto-generated method stub
@@ -63,7 +64,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+
 	private boolean validateProductMap(Map<String, String> requestMap, boolean validateId) {
 		if (requestMap.containsKey("title")) {
 			if (requestMap.containsKey("id") && validateId) {
@@ -73,20 +74,44 @@ public class ImobilierServiceIMP implements ImobilierService {
 		}
 		return false;
 	}
-	
+
 	private Imobilier geImobiliertMap(Map<String, String> requestMap, Boolean isAdd) {
-		Achat achat = new Achat();
-		achat.setDateAchat(new Date());
-		achat.setAdresse(requestMap.get("adresse"));
-		achat.setAvailable(true);
-		achat.setDescription(requestMap.get("description"));
-		achat.setPrice(Integer.parseInt(requestMap.get("price")));
-		achat.setRooms(Integer.parseInt(requestMap.get("rooms")));
-		achat.setSurface(Integer.parseInt(requestMap.get("surface")));
-		achat.setTitle(requestMap.get("title"));
-		achat.setType(Type.ACHAT);
-		
-		return achat;
+
+		Imobilier imobilier = new Imobilier();
+		imobilier.setAdresse(requestMap.get("adresse"));
+		imobilier.setAvailable(true);
+		imobilier.setDescription(requestMap.get("description"));
+		imobilier.setPrice(Integer.parseInt(requestMap.get("price")));
+		imobilier.setRooms(Integer.parseInt(requestMap.get("rooms")));
+		imobilier.setSurface(Integer.parseInt(requestMap.get("surface")));
+		imobilier.setTitle(requestMap.get("title"));
+		imobilier.setType(Type.valueOf(requestMap.get("type")));
+
+		Achat achat = null;
+		Location location = null;
+
+		switch (Type.valueOf(requestMap.get("type"))) {
+		case ACHAT:
+			System.out.println("case achat detected");
+			achat = new Achat(requestMap.get("title"), requestMap.get("description"),
+					Integer.parseInt(requestMap.get("price")), true, requestMap.get("adresse"),
+					Integer.parseInt(requestMap.get("surface")), Integer.parseInt(requestMap.get("rooms")),
+					Type.valueOf(requestMap.get("type")), new Date());
+
+			return achat;
+		case LOCATION:
+			System.out.println("case location detected");
+			location = new Location(requestMap.get("title"), requestMap.get("description"),
+					Integer.parseInt(requestMap.get("price")), true, requestMap.get("adresse"),
+					Integer.parseInt(requestMap.get("surface")), Integer.parseInt(requestMap.get("rooms")),
+					Type.valueOf(requestMap.get("type")), new Date(), new Date());
+
+		}
+		if (Type.valueOf(requestMap.get("type")).equals(Type.ACHAT)) {
+			return achat;
+		} else {
+			return location;
+		}
 	}
 
 }

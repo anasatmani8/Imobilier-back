@@ -13,7 +13,6 @@ public class Location extends Imobilier {
 	
 	private Date dateFin;
 	
-	private double price;
 
 	public Date getDateDebut() {
 		return dateDebut;
@@ -31,13 +30,15 @@ public class Location extends Imobilier {
 		this.dateFin = dateFin;
 	}
 
-	public double getPrice() {
-		return price;
+	public Location(String title, String description, double price, boolean available, String adresse, int surface,
+			int rooms, Type type, Date dateDebut, Date dateFin) {
+		super(title, description, price, available, adresse, surface, rooms, type);
+		this.dateDebut = dateDebut;
+		this.dateFin = dateFin;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+	
+
 	
 	
 }

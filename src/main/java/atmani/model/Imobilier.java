@@ -107,7 +107,7 @@ public class Imobilier implements Serializable {
 		Rooms = rooms;
 	}
 
-	public Enum<Type> getType() {
+	public Type getType() {
 		return type;
 	}
 
