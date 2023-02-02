@@ -1,5 +1,6 @@
 package atmani.restController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import atmani.constents.ImobilierConstents;
+import atmani.model.Achat;
 import atmani.model.Imobilier;
+import atmani.model.Location;
 import atmani.repository.ImobilierRepo;
 import atmani.services.ImobilierService;
 import atmani.utils.CafeUtils;
@@ -57,6 +60,26 @@ public class ImobilierRest {
 			ex.printStackTrace();
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(path="/location")
+	ResponseEntity<List<Location>> getAllLocation(){
+		try {
+			return imobilierService.getAllLocations();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} 
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(path="/achat")
+	ResponseEntity<List<Achat>> getAllAchat(){
+		try {
+			return imobilierService.getAllAchats();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} 
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

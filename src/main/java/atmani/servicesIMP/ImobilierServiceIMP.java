@@ -1,6 +1,8 @@
 package atmani.servicesIMP;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -84,7 +86,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 					case ACHAT:
 						System.out.println("suppression d'achat"+id);
 						imobilierRepo.deleteById(id);
-						
+						break;
 						
 					case LOCATION:
 						System.out.println("suppression de location");
@@ -154,6 +156,26 @@ public class ImobilierServiceIMP implements ImobilierService {
 		} else {
 			return location;
 		}
+	}
+
+	@Override
+	public ResponseEntity<List<Location>> getAllLocations() {
+		try {
+			return new ResponseEntity<>(imobilierRepo.getAllLocations(), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<List<Achat>> getAllAchats() {
+		try {
+			return new ResponseEntity<>(imobilierRepo.getAllAchat(), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

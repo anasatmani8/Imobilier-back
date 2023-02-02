@@ -29,14 +29,7 @@ public class ImobilierBackApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {	
 		
-		/*Achat achat = new Achat("Appart yasmine", "naaaaaadya", 1450, true, "riad zitoune", 211, 4, Type.VENTE, new Date());
-		imobilierRepo.save(achat);*/
-		
-		//userRepo.save(new User("amine", "0661973770", "amine@gmail.com", "admin123", "true", "admin"));
-		
-		/*imobilierRepo.save(new Imobilier("Maison", "mzyana w kbira",true));
-		imobilierRepo.save(new Imobilier("villa", "mzyana w kbira w tfat7 n3am a sidi",true));
-		imobilierRepo.save(new Imobilier("appartement", "mzyana w 9adia l mowdafin",true));*/
+		System.out.println(imobilierRepo.findById(8).toString());
 		
 		
 	}
