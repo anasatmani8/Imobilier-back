@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 
 import atmani.JWT.CustomerUsersDetailsService;
 import atmani.JWT.JwtFilter;
@@ -85,13 +84,12 @@ public class ImobilierServiceIMP implements ImobilierService {
 					case ACHAT:
 						System.out.println("suppression d'achat"+id);
 						imobilierRepo.deleteById(id);
-						System.out.println(" cccccccccccccccc");
-						break;
+						
 						
 					case LOCATION:
 						System.out.println("suppression de location");
-						//
-						
+						imobilierRepo.deleteById(id);
+						break;
 					}
 					
 					return CafeUtils.getResponseEntity("Imobilier deleted successfully", HttpStatus.OK);

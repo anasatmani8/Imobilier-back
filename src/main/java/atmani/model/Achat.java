@@ -3,7 +3,6 @@ package atmani.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.Version;
 
 @Entity
 public class Achat extends Imobilier {

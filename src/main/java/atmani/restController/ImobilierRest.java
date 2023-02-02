@@ -34,6 +34,7 @@ public class ImobilierRest {
 	
 	@GetMapping(path="/get")
 	public List<Imobilier> get(@RequestParam(required = false) String filterValue) {
+		System.out.println("1111111111");
 		return imobilierRepo.findAll();
 	}
 	
