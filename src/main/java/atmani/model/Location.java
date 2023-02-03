@@ -30,14 +30,14 @@ public class Location extends Imobilier {
 		this.dateFin = dateFin;
 	}
 
-	public Location(String title, String description, double price, boolean available, String adresse, int surface,
+	public Location(String title, String description, double price, String available, String adresse, int surface,
 			int rooms, Type type, Date dateDebut, Date dateFin) {
 		super(title, description, price, available, adresse, surface, rooms, type);
 		this.dateDebut = dateDebut;
 		this.dateFin = dateFin;
 	}
 
-	public Location(String title, String description, double price, boolean available, String adresse, int surface,
+	public Location(String title, String description, double price, String available, String adresse, int surface,
 			int rooms, Type type) {
 		super(title, description, price, available, adresse, surface, rooms, type);
 	}

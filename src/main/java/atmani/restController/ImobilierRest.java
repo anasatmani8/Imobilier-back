@@ -81,5 +81,16 @@ public class ImobilierRest {
 		} 
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@PostMapping(path="/updateStatus")
+	ResponseEntity<String> updateStatus(@RequestBody(required = true) Map<String, String> requestMap){
+		try {
+			return imobilierService.updateStatus(requestMap);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	}
 
-}
+

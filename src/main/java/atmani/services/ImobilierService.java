@@ -18,4 +18,6 @@ public interface ImobilierService {
 
 	ResponseEntity<List<Achat>> getAllAchats();
 
+	ResponseEntity<String> updateStatus(Map<String, String> requestMap);
+
 }

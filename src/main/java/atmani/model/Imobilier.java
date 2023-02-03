@@ -30,7 +30,7 @@ public class Imobilier implements Serializable {
 	
 	private double price;
 	
-	private boolean available;
+	private String available;
 	
 	private String adresse;
 	
@@ -76,11 +76,11 @@ public class Imobilier implements Serializable {
 		this.price = price;
 	}
 
-	public boolean isAvailable() {
+	public String getAvailable() {
 		return available;
 	}
 
-	public void setAvailable(boolean available) {
+	public void setAvailable(String available) {
 		this.available = available;
 	}
 
@@ -116,7 +116,7 @@ public class Imobilier implements Serializable {
 		this.type = type;
 	}
 
-	public Imobilier(String title, String description , double price, boolean available, String adresse,
+	public Imobilier(String title, String description , double price, String available, String adresse,
 			int surface, int rooms, Type type) {
 		super();
 		this.title = title;

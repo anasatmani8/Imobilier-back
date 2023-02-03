@@ -21,7 +21,7 @@ public class Achat extends Imobilier {
 		this.dateAchat = dateAchat;
 	}
 
-	public Achat(String title, String description, double price, boolean available, String adresse,
+	public Achat(String title, String description, double price, String available, String adresse,
 			int surface, int rooms, Type type, Date dateAchat) {
 		super(title, description, price, available, adresse, surface, rooms, type);
 		this.dateAchat = dateAchat;

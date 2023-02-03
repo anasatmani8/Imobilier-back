@@ -81,7 +81,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 				Optional<Imobilier> optional = imobilierRepo.findById(id);
 				if (optional.isPresent() == true) {
 					System.out.println(optional.toString());
-
+					System.out.println(customerUsersDetailsService.getUserDetail().getEmail()+" who made the operation");
 					switch (optional.get().getType()) {
 					case ACHAT:
 						System.out.println("suppression d'achat"+id);
@@ -90,7 +90,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 						
 					case LOCATION:
 						System.out.println("suppression de location");
-						imobilierRepo.deleteById(id);
+						imobilierRepo.deleteById(id); 
 						break;
 					}
 					
@@ -123,7 +123,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 
 		Imobilier imobilier = new Imobilier();
 		imobilier.setAdresse(requestMap.get("adresse"));
-		imobilier.setAvailable(true);
+		imobilier.setAvailable(requestMap.get("available"));
 		imobilier.setDescription(requestMap.get("description"));
 		imobilier.setPrice(Integer.parseInt(requestMap.get("price")));
 		imobilier.setRooms(Integer.parseInt(requestMap.get("rooms")));
@@ -138,7 +138,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		case ACHAT:
 			System.out.println("case achat detected");
 			achat = new Achat(requestMap.get("title"), requestMap.get("description"),
-					Integer.parseInt(requestMap.get("price")), true, requestMap.get("adresse"),
+					Integer.parseInt(requestMap.get("price")), requestMap.get("available"), requestMap.get("adresse"),
 					Integer.parseInt(requestMap.get("surface")), Integer.parseInt(requestMap.get("rooms")),
 					Type.valueOf(requestMap.get("type")), new Date());
 
@@ -146,7 +146,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		case LOCATION:
 			System.out.println("case location detected");
 			location = new Location(requestMap.get("title"), requestMap.get("description"),
-					Integer.parseInt(requestMap.get("price")), true, requestMap.get("adresse"),
+					Integer.parseInt(requestMap.get("price")), requestMap.get("available"), requestMap.get("adresse"),
 					Integer.parseInt(requestMap.get("surface")), Integer.parseInt(requestMap.get("rooms")),
 					Type.valueOf(requestMap.get("type")), new Date(), new Date());
 
@@ -156,7 +156,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		} else {
 			return location;
 		}
-	}
+	} 
 
 	@Override
 	public ResponseEntity<List<Location>> getAllLocations() {
@@ -176,6 +176,27 @@ public class ImobilierServiceIMP implements ImobilierService {
 			ex.printStackTrace();
 		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
+		try {
+			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
+				Optional<Imobilier> optional = imobilierRepo.findById(Integer.parseInt(requestMap.get("id")));
+				if (optional.isPresent() == true) {
+					
+					imobilierRepo.updateStatus(requestMap.get("available"), Integer.parseInt(requestMap.get("id")));
+					return CafeUtils.getResponseEntity("Product Status updated successfully", HttpStatus.OK);
+				} else {
+					return CafeUtils.getResponseEntity("Product id not found :/", HttpStatus.OK);
+				}
+			} else {
+				return CafeUtils.getResponseEntity(ImobilierConstents.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }
