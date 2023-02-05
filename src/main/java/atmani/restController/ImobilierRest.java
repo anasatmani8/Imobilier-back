@@ -28,21 +28,21 @@ import atmani.utils.CafeUtils;
 @RestController
 @CrossOrigin("*")
 public class ImobilierRest {
-	
+
 	@Autowired
 	ImobilierRepo imobilierRepo;
-	
+
 	@Autowired
 	ImobilierService imobilierService;
-	
-	@GetMapping(path="/get")
+
+	@GetMapping(path = "/get")
 	public List<Imobilier> get() {
 		System.out.println("1111111111");
 		return imobilierRepo.findAll();
 	}
-	
-	@PostMapping(path="/add")
-	public ResponseEntity<String> addImobilier(@RequestBody(required = true) Map<String, String> requestMap){
+
+	@PostMapping(path = "/add")
+	public ResponseEntity<String> addImobilier(@RequestBody(required = true) Map<String, String> requestMap) {
 		try {
 			return imobilierService.addImobilier(requestMap);
 		} catch (Exception ex) {
@@ -50,10 +50,10 @@ public class ImobilierRest {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@GetMapping(path="/delete/{id}")
 
-	ResponseEntity<String> delete(@PathVariable Integer id){
+	@GetMapping(path = "/delete/{id}")
+
+	ResponseEntity<String> delete(@PathVariable Integer id) {
 		try {
 			return imobilierService.deleteImobilier(id);
 		} catch (Exception ex) {
@@ -61,29 +61,29 @@ public class ImobilierRest {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@GetMapping(path="/location")
-	ResponseEntity<List<Location>> getAllLocation(){
+
+	@GetMapping(path = "/location")
+	ResponseEntity<List<Location>> getAllLocation() {
 		try {
 			return imobilierService.getAllLocations();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		} 
+		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@GetMapping(path="/achat")
-	ResponseEntity<List<Achat>> getAllAchat(){
+
+	@GetMapping(path = "/achat")
+	ResponseEntity<List<Achat>> getAllAchat() {
 		try {
 			return imobilierService.getAllAchats();
 		} catch (Exception ex) {
 			ex.printStackTrace();
-		} 
+		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@PostMapping(path="/updateStatus")
-	ResponseEntity<String> updateStatus(@RequestBody(required = true) Map<String, String> requestMap){
+
+	@PostMapping(path = "/updateStatus")
+	ResponseEntity<String> updateStatus(@RequestBody(required = true) Map<String, String> requestMap) {
 		try {
 			return imobilierService.updateStatus(requestMap);
 		} catch (Exception ex) {
@@ -91,6 +91,17 @@ public class ImobilierRest {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@PostMapping(path="/update")
+	ResponseEntity<String> updateAchat(@RequestBody(required = true) Map<String, String> requrstMap){
+		
+		try {
+			return imobilierService.updateAchat(requrstMap);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
 
-
+}

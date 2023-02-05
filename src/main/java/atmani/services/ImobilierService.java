@@ -20,4 +20,6 @@ public interface ImobilierService {
 
 	ResponseEntity<String> updateStatus(Map<String, String> requestMap);
 
+	ResponseEntity<String> updateAchat(Map<String, String> requrstMap);
+
 }

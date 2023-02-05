@@ -157,6 +157,26 @@ public class ImobilierServiceIMP implements ImobilierService {
 			return location;
 		}
 	} 
+	
+	private Achat getAchat(Map<String, String> requestMap, Boolean isAdd) {
+
+		Achat  imobilier = new Achat();
+		imobilier.setAdresse(requestMap.get("adresse"));
+		imobilier.setAvailable(requestMap.get("available"));
+		imobilier.setDescription(requestMap.get("description"));
+		imobilier.setPrice(Integer.parseInt(requestMap.get("price")));
+		imobilier.setRooms(Integer.parseInt(requestMap.get("rooms")));
+		imobilier.setSurface(Integer.parseInt(requestMap.get("surface")));
+		imobilier.setTitle(requestMap.get("title"));
+		imobilier.setType(Type.valueOf(requestMap.get("type")));
+		imobilier.setDateAchat(new Date());
+		
+
+		
+
+			return imobilier;
+		
+	} 
 
 	@Override
 	public ResponseEntity<List<Location>> getAllLocations() {
@@ -195,6 +215,40 @@ public class ImobilierServiceIMP implements ImobilierService {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@Override
+	public ResponseEntity<String> updateAchat(Map<String, String> requrstMap) {
+		try {
+			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
+				if (validateProductMap(requrstMap, true)) {
+					System.out.println(requrstMap.get(("id")));
+					Optional<Imobilier> product = imobilierRepo.findById(Integer.parseInt(requrstMap.get(("id"))));
+					System.out.println(product.toString());
+					if (product.isPresent() == true) {
+						Achat productN = getAchat(requrstMap, true);
+						System.out.println(productN.toString()+"achat");
+						
+						
+							imobilierRepo.updateAchat(productN.getRooms(), productN.getAdresse(), productN.getAvailable(), productN.getDescription(),productN.getPrice(),
+									productN.getSurface(), productN.getTitle(), new Date(), Integer.parseInt(requrstMap.get(("id"))));
+							
+						
+
+						return CafeUtils.getResponseEntity("Product Updated Successfuly", HttpStatus.OK);
+					} else {
+						return CafeUtils.getResponseEntity("Product not found :/", HttpStatus.OK);
+					}
+				} else {
+					return CafeUtils.getResponseEntity(ImobilierConstents.INVALID_DATA, HttpStatus.BAD_REQUEST);
+				}
+			}
+			return CafeUtils.getResponseEntity(ImobilierConstents.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}

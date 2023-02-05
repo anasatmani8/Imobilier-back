@@ -1,5 +1,6 @@
 package atmani.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import atmani.model.Achat;
 import atmani.model.Imobilier;
 import atmani.model.Location;
+import atmani.model.Type;
 @RepositoryRestResource
 @Transactional
 @Repository
@@ -28,5 +30,11 @@ public interface ImobilierRepo extends JpaRepository<Imobilier, Integer> {
 	@Modifying
 	@Query(value = "UPDATE imobilier p SET p.available =:status WHERE p.id =:id", nativeQuery = true)
 	Integer updateStatus(@Param("status") String status, @Param("id") int id);
-
+	
+	@Modifying
+	@Query(value = "UPDATE imobilier i, achat a SET i.rooms =:rooms, i.adresse=:adresse, i.available=:available, i.description=:desc, i.price=:price, i.surface=:surface,"
+			+ " i.title=:title , a.date_achat=:date WHERE i.id =:id and a.id=:id", nativeQuery = true)
+	Integer updateAchat(@Param("rooms") int rooms,@Param("adresse") String adresse,@Param("available") String available,@Param("desc") String description,@Param("price") double price
+			, @Param("surface") double surface,@Param("title") String title,@Param("date") Date date,@Param("id") int  id);
+	//id, rooms, adresse, available, description, price, surface, title, type, date_achat, id
 };
