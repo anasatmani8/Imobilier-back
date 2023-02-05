@@ -15,6 +15,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Imobilier implements Serializable {
@@ -42,7 +45,7 @@ public class Imobilier implements Serializable {
 	
 	private int Rooms;
 	
-	@OneToMany(mappedBy = ("imobilier"), fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "imobilier")
 	List<Image> listImage;
 	
 	@Enumerated(EnumType.STRING)

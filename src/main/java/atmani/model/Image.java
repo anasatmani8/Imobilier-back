@@ -2,6 +2,7 @@ package atmani.model;
 
 
 
+import java.io.Serializable;
 import java.sql.Blob;
 import java.util.Collection;
 
@@ -18,13 +19,19 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
-public class Image {
+public class Image implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	
 	private int id_image;
+	
 	  @Lob
-	  private Collection<byte[]>  data;
-	  @JsonProperty(access = Access.WRITE_ONLY)
+	  @Column(name="data", nullable = false, columnDefinition = "mediumblob")
+	  private byte[] data;
+
 	  @ManyToOne
 	  private Imobilier imobilier;
 

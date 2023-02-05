@@ -2,7 +2,10 @@ package atmani.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Achat extends Imobilier {
@@ -12,8 +15,10 @@ public class Achat extends Imobilier {
 	
 	
 	private Date dateAchat;
+	
+	 
 
-	public Date getDateAchat() {
+	public Date getDateAchat() { 
 		return dateAchat;
 	}
 
