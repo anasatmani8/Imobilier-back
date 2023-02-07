@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,9 +32,31 @@ public class AchatDetail {
 	private int surface;
 
 	private int Rooms;
-
+	
+	@Lob
 	private byte[] image;
 
 	private Date dateAchat;
+	
+	private String nameImage;
+
+	public AchatDetail(String title, String description, double price, String available, String adresse, int surface,
+			int rooms, byte[] image, Date dateAchat, String nameImage) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.price = price;
+		this.available = available;
+		this.adresse = adresse;
+		this.surface = surface;
+		Rooms = rooms;
+		this.image = image;
+		this.dateAchat = dateAchat;
+		this.nameImage = nameImage;
+	}
+	
+	
+	
+	
 
 }
