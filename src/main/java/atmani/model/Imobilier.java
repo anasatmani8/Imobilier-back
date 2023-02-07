@@ -145,6 +145,12 @@ public class Imobilier implements Serializable {
 				+ ", available=" + available + ", adresse=" + adresse + ", surface=" + surface + ", Rooms=" + Rooms
 				+ ", type=" + type + "]";
 	}
+
+	public Imobilier(int id) {
+		super();
+		this.id = id;
+	}
+	
 	
 	
 	

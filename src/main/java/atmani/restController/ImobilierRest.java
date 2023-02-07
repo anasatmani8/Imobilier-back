@@ -65,11 +65,13 @@ public class ImobilierRest {
                 .image(ImageUtility.decompressImage(dbImage.get().getImage())).build();
     }
     @PostMapping("/upload/image")
-    public void uplaodImage( @RequestParam("image") MultipartFile file, @RequestParam("image2") MultipartFile file2)
+    public void uplaodImage( @RequestParam("image") MultipartFile file, @RequestParam("image2") MultipartFile file2, @RequestParam("id") int id)
             throws IOException {
+    	Imobilier imobilier = new Imobilier(id);
     	
     	if (file!= null) {
     		ImageRepo.save(Image.builder()
+    				.imobilier(imobilier)
                     .name(file.getOriginalFilename())
                     .type(file.getContentType())
                     .image(ImageUtility.compressImage(file.getBytes())).build());
@@ -78,6 +80,7 @@ public class ImobilierRest {
     	
     	if (file2!= null) {
     		ImageRepo.save(Image.builder()
+    				.imobilier(imobilier)
                     .name(file2.getOriginalFilename())
                     .type(file2.getContentType())
                     .image(ImageUtility.compressImage(file2.getBytes())).build());
