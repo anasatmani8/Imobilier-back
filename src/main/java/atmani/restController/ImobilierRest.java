@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import atmani.constents.ImobilierConstents;
 import atmani.model.Achat;
+import atmani.model.AchatDetail;
 import atmani.model.Image;
 import atmani.model.Imobilier;
 import atmani.model.Location;
@@ -40,59 +41,47 @@ public class ImobilierRest {
 
 	@Autowired
 	ImobilierService imobilierService;
-	
+
 	@Autowired
-    private atmani.repository.ImageRepo ImageRepo;
+	private atmani.repository.ImageRepo ImageRepo;
 
-    @GetMapping(path = {"/get/image/{name}"})
-    public ResponseEntity<byte[]> getImage(@PathVariable("name") String name) throws IOException {
+	@GetMapping(path = { "/get/image/{name}" })
+	public ResponseEntity<byte[]> getImage(@PathVariable("name") String name) throws IOException {
 
-        final Optional<Image> dbImage = ImageRepo.findByName(name);
+		final Optional<Image> dbImage = ImageRepo.findByName(name);
+ 
+		return ResponseEntity.ok().contentType(MediaType.valueOf(dbImage.get().getType()))
+				.body(ImageUtility.decompressImage(dbImage.get().getImage()));
+	}
 
-        return ResponseEntity
-                .ok()
-                .contentType(MediaType.valueOf(dbImage.get().getType()))
-                .body(ImageUtility.decompressImage(dbImage.get().getImage()));
-    }
-    @GetMapping(path = {"/get/image/info/{name}"})
-    public Image getImageDetails(@PathVariable("name") String name) throws IOException {
+	@GetMapping(path = { "/get/image/info/{name}" })
+	public Image getImageDetails(@PathVariable("name") String name) throws IOException {
 
-        final Optional<Image> dbImage = ImageRepo.findByName(name);
+		final Optional<Image> dbImage = ImageRepo.findByName(name);
 
-        return Image.builder()
-                .name(dbImage.get().getName())
-                .type(dbImage.get().getType())
-                .image(ImageUtility.decompressImage(dbImage.get().getImage())).build();
-    }
-    @PostMapping("/upload/image")
-    public void uplaodImage( @RequestParam("image") MultipartFile file, @RequestParam("image2") MultipartFile file2, @RequestParam("id") int id)
-            throws IOException {
-    	Imobilier imobilier = new Imobilier(id);
-    	
-    	if (file!= null) {
-    		ImageRepo.save(Image.builder()
-    				.imobilier(imobilier)
-                    .name(file.getOriginalFilename())
-                    .type(file.getContentType())
-                    .image(ImageUtility.compressImage(file.getBytes())).build());
-    		
+		return Image.builder().name(dbImage.get().getName()).type(dbImage.get().getType())
+				.image(ImageUtility.decompressImage(dbImage.get().getImage())).build();
+	}
+
+	@PostMapping("/upload/image")
+	public void uplaodImage(@RequestParam("image") MultipartFile file, @RequestParam("image2") MultipartFile file2,
+			@RequestParam("id") int id) throws IOException {
+		Imobilier imobilier = new Imobilier(id);
+
+		if (file != null) {
+			ImageRepo.save(Image.builder().imobilier(imobilier).name(file.getOriginalFilename())
+					.type(file.getContentType()).image(ImageUtility.compressImage(file.getBytes())).build());
 		}
-    	
-    	if (file2!= null) {
-    		ImageRepo.save(Image.builder()
-    				.imobilier(imobilier)
-                    .name(file2.getOriginalFilename())
-                    .type(file2.getContentType())
-                    .image(ImageUtility.compressImage(file2.getBytes())).build());
-    		
+
+		if (file2 != null) {
+			ImageRepo.save(Image.builder().imobilier(imobilier).name(file2.getOriginalFilename())
+					.type(file2.getContentType()).image(ImageUtility.compressImage(file2.getBytes())).build());
 		}
-    	
-    	
-    }
+	}
 
 	@GetMapping(path = "/get")
 	public List<Imobilier> get() {
-		System.out.println("1111111111");
+
 		return imobilierRepo.findAll();
 	}
 
@@ -136,6 +125,18 @@ public class ImobilierRest {
 		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@GetMapping(path="/achatDetails/{id}")
+	ResponseEntity<List<Optional<?>>> getAchatDetails(@PathVariable int id){
+		
+		try {
+			return imobilierService.getAchatDetail(id);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 
 	@PostMapping(path = "/updateStatus")
 	ResponseEntity<String> updateStatus(@RequestBody(required = true) Map<String, String> requestMap) {
@@ -146,10 +147,10 @@ public class ImobilierRest {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	@PostMapping(path="/update")
-	ResponseEntity<String> updateAchat(@RequestBody(required = true) Map<String, String> requrstMap){
-		
+
+	@PostMapping(path = "/update")
+	ResponseEntity<String> updateAchat(@RequestBody(required = true) Map<String, String> requrstMap) {
+
 		try {
 			return imobilierService.updateAchat(requrstMap);
 		} catch (Exception ex) {
@@ -157,6 +158,5 @@ public class ImobilierRest {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
 
 }

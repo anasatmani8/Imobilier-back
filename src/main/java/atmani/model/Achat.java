@@ -7,6 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+@Data @Setter @Getter @Builder @AllArgsConstructor @NoArgsConstructor
 @Entity
 public class Achat extends Imobilier {
 
@@ -18,13 +25,7 @@ public class Achat extends Imobilier {
 	
 	 
 
-	public Date getDateAchat() { 
-		return dateAchat;
-	}
-
-	public void setDateAchat(Date dateAchat) {
-		this.dateAchat = dateAchat;
-	}
+	
 
 	public Achat(String title, String description, double price, String available, String adresse,
 			int surface, int rooms, Type type, Date dateAchat) {
@@ -32,9 +33,6 @@ public class Achat extends Imobilier {
 		this.dateAchat = dateAchat;
 	}
 
-	public Achat() {
-		super();
-	}
 	
 	
 	

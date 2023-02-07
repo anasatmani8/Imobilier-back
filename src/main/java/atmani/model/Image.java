@@ -24,7 +24,7 @@ import lombok.Setter;
 
 @Data @Setter @Getter @Builder @AllArgsConstructor @NoArgsConstructor
 @Entity
-@JsonPOJOBuilder
+
 public class Image implements Serializable {
 	/**
 	 * 

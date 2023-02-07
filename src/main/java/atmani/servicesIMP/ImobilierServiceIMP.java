@@ -19,6 +19,7 @@ import atmani.JWT.JwtFilter;
 import atmani.JWT.JwtUtil;
 import atmani.constents.ImobilierConstents;
 import atmani.model.Achat;
+import atmani.model.AchatDetail;
 import atmani.model.Imobilier;
 import atmani.model.Location;
 import atmani.model.Type;
@@ -172,8 +173,6 @@ public class ImobilierServiceIMP implements ImobilierService {
 		imobilier.setDateAchat(new Date());
 		
 
-		
-
 			return imobilier;
 		
 	} 
@@ -192,6 +191,17 @@ public class ImobilierServiceIMP implements ImobilierService {
 	public ResponseEntity<List<Achat>> getAllAchats() {
 		try {
 			return new ResponseEntity<>(imobilierRepo.getAllAchat(), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@Override
+	public ResponseEntity<List<Optional<?>>> getAchatDetail(int id) {
+		// TODO Auto-generated method stub
+		try {
+			return new ResponseEntity<>(imobilierRepo.getAllAchatDetail(id), HttpStatus.OK);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -252,5 +262,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	
 
 }
