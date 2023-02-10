@@ -1,11 +1,16 @@
 package atmani.restController;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.ServletContext;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import atmani.constents.ImobilierConstents;
 import atmani.model.Achat;
-import atmani.model.AchatDetail;
+
 import atmani.model.Image;
 import atmani.model.Imobilier;
 import atmani.model.Location;
@@ -38,6 +43,9 @@ public class ImobilierRest {
 
 	@Autowired
 	ImobilierRepo imobilierRepo;
+	
+	@Autowired 
+	ServletContext context;
 
 	@Autowired
 	ImobilierService imobilierService;
@@ -62,22 +70,49 @@ public class ImobilierRest {
 		return Image.builder().name(dbImage.get().getName()).type(dbImage.get().getType())
 				.image(ImageUtility.decompressImage(dbImage.get().getImage())).build();
 	}
+	
+	
+	
+	
 
 	@PostMapping("/upload/image")
 	public void uplaodImage(@RequestParam("image") MultipartFile file, @RequestParam("image2") MultipartFile file2,
 			@RequestParam("id") int id) throws IOException {
 		Imobilier imobilier = new Imobilier(id);
+		
+		
+		boolean isExist = new File("C:\\Users\\Admin\\Desktop\\Etude\\JEE S5\\Imobilier-back\\src\\main\\FilesP").exists();
+		if (!isExist) {
+			new File("C:\\Users\\Admin\\Desktop\\Etude\\JEE S5\\Imobilier-back\\src\\main\\FilesP").mkdir();
+			System.out.println("--------------- mkdir");
+		}
+		String fileName = file.getOriginalFilename();
+		String newFileName = FilenameUtils.getBaseName(fileName)+"."+FilenameUtils.getExtension(fileName);
+		File serverFilename = new File("C:\\Users\\Admin\\Desktop\\Etude\\JEE S5\\Imobilier-back\\src\\main\\FilesP"+File.separator+newFileName);
+		System.out.println(serverFilename);
+		try {
+			System.out.println("image");
+			FileUtils.writeByteArrayToFile(serverFilename, file.getBytes());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		if (file != null) {
-			ImageRepo.save(Image.builder().imobilier(imobilier).name(file.getOriginalFilename())
-					.type(file.getContentType()).image(ImageUtility.compressImage(file.getBytes())).build());
+			/*ImageRepo.save(Image.builder().imobilier(imobilier).name(file.getOriginalFilename())
+					.type(file.getContentType()).image(ImageUtility.compressImage(file.getBytes())).build());*/
 		}
 
 		if (file2 != null) {
-			ImageRepo.save(Image.builder().imobilier(imobilier).name(file2.getOriginalFilename())
-					.type(file2.getContentType()).image(ImageUtility.compressImage(file2.getBytes())).build());
+			/*ImageRepo.save(Image.builder().imobilier(imobilier).name(file2.getOriginalFilename())
+					.type(file2.getContentType()).image(ImageUtility.compressImage(file2.getBytes())).build());*/
 		}
 	}
+	
+	
+	
+	
+	
 
 	@GetMapping(path = "/get")
 	public List<Imobilier> get() {
