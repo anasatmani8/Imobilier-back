@@ -2,6 +2,7 @@ package atmani.restController;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -76,8 +77,9 @@ public class ImobilierRest {
 	
 
 	@PostMapping("/upload/image")
-	public void uplaodImage(@RequestParam("image") MultipartFile file, @RequestParam("image2") MultipartFile file2,
+	public ResponseEntity<Void> uplaodImage(@RequestParam("files") MultipartFile[] multipartFiles,
 			@RequestParam("id") int id) throws IOException {
+		id=15;
 		Imobilier imobilier = new Imobilier(id);
 		
 		
@@ -86,7 +88,28 @@ public class ImobilierRest {
 			new File("C:\\Users\\Admin\\Desktop\\Etude\\JEE S5\\Imobilier-back\\src\\main\\FilesP").mkdir();
 			System.out.println("--------------- mkdir");
 		}
-		String fileName = file.getOriginalFilename();
+		
+		try {
+			System.out.println("Files liste");
+			for (MultipartFile file : multipartFiles) {
+				System.out.println("file Name : "+file.getOriginalFilename());
+				System.out.println("file Size : "+file.getSize());
+				System.out.println("file type : "+file.getContentType());
+				System.out.println("------------------------------------");
+				save(file);
+				if (file != null) {
+					ImageRepo.save(Image.builder().imobilier(imobilier).name(file.getOriginalFilename())
+							.type(file.getContentType()).image(ImageUtility.compressImage(file.getBytes())).build());
+				}
+				
+			}
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		/*String fileName = file.getOriginalFilename();
 		String newFileName = FilenameUtils.getBaseName(fileName)+"."+FilenameUtils.getExtension(fileName);
 		File serverFilename = new File("C:\\Users\\Admin\\Desktop\\Etude\\JEE S5\\Imobilier-back\\src\\main\\FilesP"+File.separator+newFileName);
 		System.out.println(serverFilename);
@@ -96,20 +119,32 @@ public class ImobilierRest {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
-		if (file != null) {
+		/*if (file != null) {
 			/*ImageRepo.save(Image.builder().imobilier(imobilier).name(file.getOriginalFilename())
-					.type(file.getContentType()).image(ImageUtility.compressImage(file.getBytes())).build());*/
-		}
+					.type(file.getContentType()).image(ImageUtility.compressImage(file.getBytes())).build());
+		}*/
 
-		if (file2 != null) {
+		/*if (file2 != null) {
 			/*ImageRepo.save(Image.builder().imobilier(imobilier).name(file2.getOriginalFilename())
-					.type(file2.getContentType()).image(ImageUtility.compressImage(file2.getBytes())).build());*/
-		}
+					.type(file2.getContentType()).image(ImageUtility.compressImage(file2.getBytes())).build());
+		}*/
 	}
 	
-	
+	private String save(MultipartFile file) {
+		try {
+		String fileName = file.getOriginalFilename();
+		
+		byte[] bytes = file.getBytes();
+		java.nio.file.Path path = Paths.get("C:\\Users\\Admin\\Desktop\\Etude\\JEE S5\\Imobilier-back\\src\\main\\FilesP\\"+fileName);
+		java.nio.file.Files.write(path, bytes);
+		return fileName;
+		}catch (Exception e) {
+			return null;
+		}
+		
+	}
 	
 	
 	
