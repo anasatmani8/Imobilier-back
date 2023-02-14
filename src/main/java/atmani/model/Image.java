@@ -3,6 +3,7 @@ package atmani.model;
 
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,9 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,9 @@ import lombok.Setter;
 @Data @Setter @Getter @Builder @AllArgsConstructor @NoArgsConstructor
 @Entity
 
-public class Image implements Serializable {
+public class Image implements Serializable { 
+	
+
 	/**
 	 * 
 	 */ 
@@ -37,12 +40,21 @@ public class Image implements Serializable {
 	  @Lob
 	  private byte[] image;
 
-	  @ManyToOne(fetch = FetchType.LAZY)
-	  private Imobilier imobilier;
+	  @ManyToMany(fetch= FetchType.EAGER)
+	  private Set<Imobilier> imobiliers;
 	  
 	  private String name;
 	  
 	  private String type;
+
+	public Image(byte[] image, String name, String type) {
+		super();
+		this.image = image;
+		this.name = name;
+		this.type = type;
+	}
+	  
+	  
 
 	
 

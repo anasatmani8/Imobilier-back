@@ -22,10 +22,7 @@ public class Achat extends Imobilier {
 	
 	
 	private Date dateAchat;
-	
-	 
 
-	
 
 	public Achat(String title, String description, double price, String available, String adresse,
 			int surface, int rooms, Type type, Date dateAchat) {

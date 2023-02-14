@@ -1,10 +1,14 @@
 package atmani.servicesIMP;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+
 import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,13 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import atmani.JWT.CustomerUsersDetailsService;
 import atmani.JWT.JwtFilter;
 import atmani.JWT.JwtUtil;
 import atmani.constents.ImobilierConstents;
 import atmani.model.Achat;
-import atmani.model.AchatDetail;
+import atmani.model.Image;
 import atmani.model.Imobilier;
 import atmani.model.Location;
 import atmani.model.Type;
@@ -51,13 +56,13 @@ public class ImobilierServiceIMP implements ImobilierService {
 	Logger log = (Logger) LoggerFactory.getLogger(UserServiceIMP.class);
 
 	@Override
-	public ResponseEntity<String> addImobilier(Map<String, String> requestMap) {
+	public ResponseEntity<String> addImobilier(Map<String, String> requestMap, MultipartFile[] files) {
 		// TODO Auto-generated method stub
 		System.out.println("11");
 		try {
 			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
 				if (validateProductMap(requestMap, false)) {
-					imobilierRepo.save(geImobiliertMap(requestMap, false));
+					imobilierRepo.save(geImobiliertMap(requestMap, false, files));
 					return CafeUtils.getResponseEntity("Imobilier Added Successfully", HttpStatus.OK);
 				} else {
 					return CafeUtils.getResponseEntity(ImobilierConstents.INVALID_DATA, HttpStatus.BAD_REQUEST);
@@ -120,7 +125,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		return false;
 	}
 
-	private Imobilier geImobiliertMap(Map<String, String> requestMap, Boolean isAdd) {
+	private Imobilier geImobiliertMap(Map<String, String> requestMap, Boolean isAdd,MultipartFile[] files) {
 
 		Imobilier imobilier = new Imobilier();
 		imobilier.setAdresse(requestMap.get("adresse"));
@@ -131,6 +136,14 @@ public class ImobilierServiceIMP implements ImobilierService {
 		imobilier.setSurface(Integer.parseInt(requestMap.get("surface")));
 		imobilier.setTitle(requestMap.get("title"));
 		imobilier.setType(Type.valueOf(requestMap.get("type")));
+		try {
+			Set<Image> images = uploadImage(files);
+			imobilier.setProductImages(images);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 		Achat achat = null;
 		Location location = null;
@@ -158,6 +171,21 @@ public class ImobilierServiceIMP implements ImobilierService {
 			return location;
 		}
 	} 
+	
+	public Set<Image> uploadImage(MultipartFile [] multipartFiles) throws IOException{
+		Set<Image> images = new HashSet<>();
+		
+		for (MultipartFile file : multipartFiles) {
+			Image image = new Image(
+					file.getBytes(),
+					file.getOriginalFilename(),
+					file.getContentType()
+					);
+			images.add(image);
+		}
+		return images;
+		
+	}
 	
 	private Achat getAchat(Map<String, String> requestMap, Boolean isAdd) {
 
@@ -197,7 +225,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@Override
+/*	@Override
 	public ResponseEntity<List<Optional<?>>> getAchatDetail(int id) {
 		// TODO Auto-generated method stub
 		try {
@@ -207,7 +235,7 @@ public class ImobilierServiceIMP implements ImobilierService {
 		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+*/
 	@Override
 	public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
 		try {

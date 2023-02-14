@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,6 +49,9 @@ public class ImobilierRest {
 	
 	@Autowired 
 	ServletContext context;
+	
+	@Autowired
+	atmani.repository.ImageRepo imageRepository;
 
 	@Autowired
 	ImobilierService imobilierService;
@@ -76,10 +81,10 @@ public class ImobilierRest {
 	
 	
 
-	@PostMapping("/upload/image")
+	/*@PostMapping("/upload/image")
 	public ResponseEntity<Void> uplaodImage(@RequestParam("files") MultipartFile[] multipartFiles,
 			@RequestParam("id") int id) throws IOException {
-		id=15;
+		
 		Imobilier imobilier = new Imobilier(id);
 		
 		
@@ -94,7 +99,7 @@ public class ImobilierRest {
 			for (MultipartFile file : multipartFiles) {
 				System.out.println("file Name : "+file.getOriginalFilename());
 				System.out.println("file Size : "+file.getSize());
-				System.out.println("file type : "+file.getContentType());
+				System.out.println("file Type : "+file.getContentType());
 				System.out.println("------------------------------------");
 				save(file);
 				if (file != null) {
@@ -129,9 +134,9 @@ public class ImobilierRest {
 		/*if (file2 != null) {
 			/*ImageRepo.save(Image.builder().imobilier(imobilier).name(file2.getOriginalFilename())
 					.type(file2.getContentType()).image(ImageUtility.compressImage(file2.getBytes())).build());
-		}*/
+		
 	}
-	
+	}*/
 	private String save(MultipartFile file) {
 		try {
 		String fileName = file.getOriginalFilename();
@@ -147,6 +152,24 @@ public class ImobilierRest {
 	}
 	
 	
+	@GetMapping(path = "/getImages/{id}")
+    public ResponseEntity<List<String>>getImages(@PathVariable("id") int name)throws IOException{
+        List<String>images=new ArrayList<>();
+        final Optional<Image> dbImage = imageRepository.findById(name);
+        String encode64=null;
+        try {
+            String extention=dbImage.get().getType();
+            encode64= Base64.getEncoder().encodeToString(dbImage.get().getImage());
+            System.out.println(encode64);
+            images.add("data:"+extention+";base64,"+encode64);
+
+        }catch (Exception e){
+
+        }
+        return new ResponseEntity<List<String>>(images,HttpStatus.ACCEPTED);
+    }
+	
+	
 	
 
 	@GetMapping(path = "/get")
@@ -155,10 +178,10 @@ public class ImobilierRest {
 		return imobilierRepo.findAll();
 	}
 
-	@PostMapping(path = "/add")
-	public ResponseEntity<String> addImobilier(@RequestBody(required = true) Map<String, String> requestMap) {
+	@PostMapping(path = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public ResponseEntity<String> addImobilier(@RequestPart("imobilier") Map<String, String> requestMap, @RequestPart("file") MultipartFile[] files) {
 		try {
-			return imobilierService.addImobilier(requestMap);
+			return imobilierService.addImobilier(requestMap, files);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -196,7 +219,7 @@ public class ImobilierRest {
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@GetMapping(path="/achatDetails/{id}")
+	/*@GetMapping(path="/achatDetails/{id}")
 	ResponseEntity<List<Optional<?>>> getAchatDetails(@PathVariable int id){
 		
 		try {
@@ -205,7 +228,7 @@ public class ImobilierRest {
 			ex.printStackTrace();
 		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+	}*/
 	
 
 	@PostMapping(path = "/updateStatus")

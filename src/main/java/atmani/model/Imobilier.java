@@ -2,15 +2,19 @@ package atmani.model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 
@@ -27,9 +31,7 @@ public class Imobilier implements Serializable {
 	private String title;
 	
 	//private List<Blob> images;
-	
 	private String description;
-	
 	
 	private double price;
 	
@@ -41,8 +43,8 @@ public class Imobilier implements Serializable {
 	
 	private int Rooms;
 	
-	@OneToMany(mappedBy = "imobilier")
-	Collection<Image> listImage;
+	@ManyToMany(mappedBy = "imobiliers", fetch = FetchType.EAGER)
+	Set<Image> listImage;
 	
 	@Enumerated(EnumType.STRING)
 	private Type type;
@@ -54,6 +56,16 @@ public class Imobilier implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	
+
+	public Set<Image> getProductImages() {
+		return listImage;
+	}
+
+	public void setProductImages(Set<Image> productImages) {
+		this.listImage = productImages;
 	}
 
 	public String getTitle() {

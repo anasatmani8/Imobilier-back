@@ -14,7 +14,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import atmani.model.Achat;
-import atmani.model.AchatDetail;
 import atmani.model.Imobilier;
 import atmani.model.Location;
 
@@ -47,9 +46,9 @@ public interface ImobilierRepo extends JpaRepository<Imobilier, Integer> {
 	
 	
 
-	@Query(value = "SELECT i.rooms , i.adresse, i.available, i.description, i.price, i.surface,i.title, im.image, im.name , a.date_achat FROM imobilier.achat a , imobilier i, image im where i.id=a.id and i.id=im.imobilier_id and i.id=:id", nativeQuery = true)
+	/*@Query(value = "SELECT i.rooms , i.adresse, i.available, i.description, i.price, i.surface,i.title, im.image, im.name , a.date_achat FROM imobilier.achat a , imobilier i, image im where i.id=a.id and i.id=im.imobilier_id and i.id=:id", nativeQuery = true)
 	List<Optional<?>> getAllAchatDetail(@Param("id") int id);
-	
+	*/
 	
 	
 	

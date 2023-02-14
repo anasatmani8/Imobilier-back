@@ -5,14 +5,14 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import atmani.model.Achat;
-import atmani.model.AchatDetail;
 import atmani.model.Location;
 
 public interface ImobilierService {
 
-	ResponseEntity<String> addImobilier(Map<String, String> requestMap);
+	ResponseEntity<String> addImobilier(Map<String, String> requestMap, MultipartFile[] files);
 
 	ResponseEntity<String> deleteImobilier(Integer id);
 
@@ -24,6 +24,6 @@ public interface ImobilierService {
 
 	ResponseEntity<String> updateAchat(Map<String, String> requrstMap);
 
-	ResponseEntity<List<Optional<?>>> getAchatDetail(int id);
+	//ResponseEntity<List<Optional<?>>> getAchatDetail(int id);
 
 }
