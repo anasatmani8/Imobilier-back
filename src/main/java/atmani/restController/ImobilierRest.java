@@ -32,10 +32,13 @@ import atmani.constents.ImobilierConstents;
 import atmani.model.Achat;
 
 import atmani.model.Image;
+import atmani.model.ImoAchat;
 import atmani.model.Imobilier;
 import atmani.model.Location;
+import atmani.repository.ImoAchatRepo;
 import atmani.repository.ImobilierRepo;
 import atmani.services.ImobilierService;
+import atmani.servicesIMP.ImoAchatServiceIMP;
 import atmani.utils.CafeUtils;
 import atmani.utils.ImageUtility;
 
@@ -46,6 +49,9 @@ public class ImobilierRest {
 
 	@Autowired
 	ImobilierRepo imobilierRepo;
+	
+	@Autowired
+	ImoAchatServiceIMP achatService;
 	
 	@Autowired 
 	ServletContext context;
@@ -209,15 +215,7 @@ public class ImobilierRest {
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
-	@GetMapping(path = "/achat")
-	ResponseEntity<List<Achat>> getAllAchat() {
-		try {
-			return imobilierService.getAllAchats();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+
 	
 	/*@GetMapping(path="/achatDetails/{id}")
 	ResponseEntity<List<Optional<?>>> getAchatDetails(@PathVariable int id){

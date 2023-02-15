@@ -1,27 +1,38 @@
 package atmani.restController;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import atmani.constents.ImobilierConstents;
 import atmani.model.Image;
 import atmani.model.ImageModel;
 import atmani.model.ImoAchat;
-import atmani.servicesIMP.ImoAchatService;
+import atmani.servicesIMP.ImoAchatServiceIMP;
+import atmani.utils.CafeUtils;
 
 @RestController
+
+@RequestMapping(path = "/imoAchat")
 public class ImoAchatRest {
 	
 	@Autowired
-	ImoAchatService achatService;
+	ImoAchatServiceIMP achatService;
 	
 	@PostMapping(path="addAchat", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ImoAchat addAchat(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
@@ -51,6 +62,26 @@ public class ImoAchatRest {
 		}
 		return images;
 		
+	}
+	
+	@GetMapping(path = "/achat")
+	ResponseEntity<List<ImoAchat>> getAllAchat() {
+		try {
+			return achatService.getAllAchats();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping(path="/delete/{id}")
+	ResponseEntity<String> deleteAchat(@PathVariable("id") Integer id) {
+		try {
+			return achatService.deleteAchat(id);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 }

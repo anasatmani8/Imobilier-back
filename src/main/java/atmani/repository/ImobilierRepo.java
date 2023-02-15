@@ -25,7 +25,7 @@ public interface ImobilierRepo extends JpaRepository<Imobilier, Integer> {
 	@Query(value = "SELECT * FROM imobilier.imobilier i , location l where l.id=i.id", nativeQuery = true)
 	List<Location> getAllLocations();
 
-	@Query(value = "SELECT * FROM imobilier.imobilier i , achat a where a.id=i.id", nativeQuery = true)
+	@Query(value = "SELECT * FROM imobilier.imo_achat", nativeQuery = true)
 	List<Achat> getAllAchat();
 
 	@Modifying
