@@ -53,4 +53,10 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
+	@Override
+	public ImoAchat getAchatDetailsById(Integer id) {
+		// TODO Auto-generated method stub
+		return achatRepo.findById(id).get();
+	}
 }

@@ -23,6 +23,7 @@ import atmani.constents.ImobilierConstents;
 import atmani.model.Image;
 import atmani.model.ImageModel;
 import atmani.model.ImoAchat;
+import atmani.model.Type;
 import atmani.servicesIMP.ImoAchatServiceIMP;
 import atmani.utils.CafeUtils;
 
@@ -34,13 +35,14 @@ public class ImoAchatRest {
 	@Autowired
 	ImoAchatServiceIMP achatService;
 	
-	@PostMapping(path="addAchat", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	@PostMapping(path="/addAchat", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ImoAchat addAchat(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
 		System.out.println("start");
 		System.out.println(files);
 		try {
 			Set<ImageModel> images = uploadImage(files);
 			achat.setImoAchatImages(images);
+			achat.setType(Type.ACHAT);
 			return achatService.addAchat(achat);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,6 +66,11 @@ public class ImoAchatRest {
 		
 	}
 	
+	@GetMapping(path="/getAchatDetailsById/{id}")
+	public ImoAchat getAchatDetailsById(@PathVariable("id") Integer id) {
+		return achatService.getAchatDetailsById(id);
+	}
+	
 	@GetMapping(path = "/achat")
 	ResponseEntity<List<ImoAchat>> getAllAchat() {
 		try {
@@ -74,7 +81,7 @@ public class ImoAchatRest {
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
-	@PostMapping(path="/delete/{id}")
+	@GetMapping(path="/delete/{id}")
 	ResponseEntity<String> deleteAchat(@PathVariable("id") Integer id) {
 		try {
 			return achatService.deleteAchat(id);

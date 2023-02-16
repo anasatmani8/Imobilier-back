@@ -12,4 +12,5 @@ public interface ImoAchatService {
 	ResponseEntity<List<ImoAchat>> getAllAchats();
 	
 	public ResponseEntity<String> deleteAchat(Integer id);
+	public ImoAchat getAchatDetailsById(Integer id);
 }
