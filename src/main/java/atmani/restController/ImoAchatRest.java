@@ -36,7 +36,7 @@ public class ImoAchatRest {
 	ImoAchatServiceIMP achatService;
 	
 	@PostMapping(path="/addAchat", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public ImoAchat addAchat(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
+	ResponseEntity<String> addAchat(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
 		System.out.println("start");
 		System.out.println(files);
 		try {
@@ -46,8 +46,10 @@ public class ImoAchatRest {
 			return achatService.addAchat(achat);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			
 		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+		
 	}
 	
 	public Set<ImageModel> uploadImage(MultipartFile [] multipartFiles) throws IOException{

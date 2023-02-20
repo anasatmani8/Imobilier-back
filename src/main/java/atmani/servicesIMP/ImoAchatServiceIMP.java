@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import atmani.JWT.CustomerUsersDetailsService;
+
 import atmani.constents.ImobilierConstents;
 import atmani.model.ImoAchat;
 import atmani.repository.ImoAchatRepo;
@@ -22,11 +23,21 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 	@Autowired
 	CustomerUsersDetailsService customerUsersDetailsService;
 
-	public ImoAchat addAchat(ImoAchat achat) {
-		return achatRepo.save(achat);
+	public ResponseEntity<String>  addAchat(ImoAchat achat) {
+		try {
+			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
+				achatRepo.save(achat);
+				return CafeUtils.getResponseEntity("Immobilier Added Successfully", HttpStatus.OK);
+				
+			}else {
+				return CafeUtils.getResponseEntity(ImobilierConstents.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			}
 
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
 	@Override
 	public ResponseEntity<List<ImoAchat>> getAllAchats() {
 		try {
