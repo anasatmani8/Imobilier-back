@@ -10,7 +10,7 @@ import atmani.model.ImoAchat;
 public interface ImoAchatService {
 
 	ResponseEntity<List<ImoAchat>> getAllAchats();
-	
+	ResponseEntity<List<ImoAchat>> getAllLocation();
 	public ResponseEntity<String> deleteAchat(Integer id);
 	public ImoAchat getAchatDetailsById(Integer id);
 }

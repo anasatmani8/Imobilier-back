@@ -12,6 +12,7 @@ import atmani.JWT.CustomerUsersDetailsService;
 
 import atmani.constents.ImobilierConstents;
 import atmani.model.ImoAchat;
+
 import atmani.repository.ImoAchatRepo;
 import atmani.services.ImoAchatService;
 import atmani.utils.CafeUtils;
@@ -26,6 +27,7 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 	public ResponseEntity<String>  addAchat(ImoAchat achat) {
 		try {
 			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
+				System.out.println(achat);
 				achatRepo.save(achat);
 				return CafeUtils.getResponseEntity("Immobilier Added Successfully", HttpStatus.OK);
 				
@@ -41,6 +43,7 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 	@Override
 	public ResponseEntity<List<ImoAchat>> getAllAchats() {
 		try {
+			
 			return new ResponseEntity<>(achatRepo.getAllAchat(), HttpStatus.OK);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -69,5 +72,15 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 	public ImoAchat getAchatDetailsById(Integer id) {
 		// TODO Auto-generated method stub
 		return achatRepo.findById(id).get();
+	}
+	@Override
+	public ResponseEntity<List<ImoAchat>> getAllLocation() {
+		try {
+			
+			return new ResponseEntity<>(achatRepo.getAllLocation(), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

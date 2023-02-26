@@ -52,6 +52,23 @@ public class ImoAchatRest {
 		
 	}
 	
+	@PostMapping(path="/addLocation", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+	ResponseEntity<String> addLocation(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
+		System.out.println("start");
+		System.out.println(files);
+		try {
+			Set<ImageModel> images = uploadImage(files);
+			achat.setImoAchatImages(images);
+			achat.setType(Type.LOCATION);
+			return achatService.addAchat(achat);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+		
+	}
+	
 	public Set<ImageModel> uploadImage(MultipartFile [] multipartFiles) throws IOException{
 		Set<ImageModel> images = new HashSet<>();
 		
@@ -77,6 +94,15 @@ public class ImoAchatRest {
 	ResponseEntity<List<ImoAchat>> getAllAchat() {
 		try {
 			return achatService.getAllAchats();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	@GetMapping(path = "/location")
+	ResponseEntity<List<ImoAchat>> getAllLocation() {
+		try {
+			return achatService.getAllLocation();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
