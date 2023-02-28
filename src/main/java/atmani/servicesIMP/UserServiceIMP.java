@@ -223,7 +223,7 @@ public class UserServiceIMP implements UserService {
 		try {
 			User user = userDao.findByEmail(requestMap.get("email"));
 			if (!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())) 
-				emailUtils.forgotMail(user.getEmail(), "Credentials by Cafe Management System", user.getPassword());
+				emailUtils.forgotMail(user.getEmail(), "Credentials by Maroc Immo Consulting", user.getPassword());
 			
 			return CafeUtils.getResponseEntity("Check your email for Credentials", HttpStatus.OK);
 		} catch (Exception ex) {

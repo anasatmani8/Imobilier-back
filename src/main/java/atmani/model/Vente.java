@@ -1,23 +1,32 @@
 package atmani.model;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-@Entity
-public class Vente extends Imobilier {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Vente {
  
 	
-	private static final long serialVersionUID = 1L;
+	private String firstName;
 	
-	private Date  dateVente;
-
-	public Date getDateVente() {
-		return dateVente;
-	}
-
-	public void setDateVente(Date dateVente) {
-		this.dateVente = dateVente;
-	}
+	private String lastName;
+	
+	private String email;
+	
+	private String phone;
+	
+	private String personnel;
+	
+	private String property;
+	
+	private String subject;
+	
+	private String message;
+	
+	
 	
 	
 	

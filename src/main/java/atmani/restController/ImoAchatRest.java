@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import atmani.constents.ImobilierConstents;
-import atmani.model.Image;
+
 import atmani.model.ImageModel;
 import atmani.model.ImoAchat;
 import atmani.model.Type;
 import atmani.servicesIMP.ImoAchatServiceIMP;
 import atmani.utils.CafeUtils;
+import atmani.utils.EmailUtils;
 
 @RestController
 
@@ -34,6 +36,8 @@ public class ImoAchatRest {
 	
 	@Autowired
 	ImoAchatServiceIMP achatService;
+	@Autowired
+	EmailUtils emailUtils;
 	
 	@PostMapping(path="/addAchat", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	ResponseEntity<String> addAchat(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
@@ -51,6 +55,16 @@ public class ImoAchatRest {
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
+	/*@PostMapping(path="/vente")
+	ResponseEntity<String> vente(@RequestBody(required = true) Map<String, String> requestMap) {
+		
+		try {
+			emailUtils.forgotMail("anasatmani8@gmail.com", requestMap.get("subject"), "test");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
+	}*/
 	
 	@PostMapping(path="/addLocation", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	ResponseEntity<String> addLocation(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {

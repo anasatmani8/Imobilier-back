@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import atmani.model.Vente;
+
 @Service
 public class EmailUtils {
 
@@ -45,12 +47,28 @@ public class EmailUtils {
 	public void forgotMail(String to, String subject, String password) throws MessagingException {
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setFrom("anasatmani8@gmail.com");
+		helper.setFrom("ssfhdrt@gmail.com");
 		helper.setTo(to);
 		helper.setSubject(subject);
 		String htmlMsg = "<p><b>Your Login details for Cafe Management System</b><br><b>Email: </b> " + to
 				+ " <br><b>Password: </b> " + password
 				+ "<br><a href=\"http://localhost:4200/\">Click here to login</a></p>";
+		message.setContent(htmlMsg, "text/html");
+		emailSender.send(message);
+
+	}
+	
+	public void ventetMail(String to, String subject, String password, Vente vente) throws MessagingException {
+		MimeMessage message = emailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		helper.setFrom("anasatmani8@gmail.com");
+		helper.setTo(to);
+		helper.setSubject(subject);
+		String htmlMsg = "<p><b>Nouvelle demande de rendez-vous pour une vente</b><br><b>Email: </b> " + to
+				+ " <br><b>nom et prenom: </b> " + vente.getFirstName()+" "+vente.getLastName()
+				+ " <br><b>property: </b> " + vente.getProperty()
+				+ " <br><b>message: </b> " + vente.getMessage()
+				+ "<br><a href=\"http://localhost:4200/\">Click here to open the website</a></p>";
 		message.setContent(htmlMsg, "text/html");
 		emailSender.send(message);
 

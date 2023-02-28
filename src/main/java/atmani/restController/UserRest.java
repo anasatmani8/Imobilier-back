@@ -40,6 +40,8 @@ public class UserRest {
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	
 
 
 	@GetMapping(path = "/get")
