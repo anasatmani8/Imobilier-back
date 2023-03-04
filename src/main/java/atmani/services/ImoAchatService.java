@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-import atmani.model.Achat;
 import atmani.model.ImoAchat;
 
 public interface ImoAchatService {
