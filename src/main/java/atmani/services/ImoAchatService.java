@@ -1,6 +1,7 @@
 package atmani.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
@@ -12,4 +13,5 @@ public interface ImoAchatService {
 	ResponseEntity<List<ImoAchat>> getAllLocation();
 	public ResponseEntity<String> deleteAchat(Integer id);
 	public ImoAchat getAchatDetailsById(Integer id);
+	ResponseEntity<String> updateStatus(Map<String, String> requestMap);
 }

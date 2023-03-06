@@ -2,6 +2,8 @@ package atmani.servicesIMP;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +14,6 @@ import atmani.JWT.CustomerUsersDetailsService;
 
 import atmani.constents.ImobilierConstents;
 import atmani.model.ImoAchat;
-
 import atmani.repository.ImoAchatRepo;
 import atmani.services.ImoAchatService;
 import atmani.utils.CafeUtils;
@@ -82,5 +83,28 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 			ex.printStackTrace();
 		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	@Override
+	public ResponseEntity<String> updateStatus(Map<String, String> requestMap) {
+		try {
+			System.out.println("2");
+			System.out.println(customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")+" role");
+			if (customerUsersDetailsService.getUserDetail().getRole().equalsIgnoreCase("admin")) {
+				System.out.println("3");
+				Optional<ImoAchat> optional = achatRepo.findById(Integer.parseInt(requestMap.get("id")));
+				if (optional.isPresent() == true) {
+					System.out.println(requestMap.get("available"));
+					achatRepo.updateStatus(requestMap.get("available"), Integer.parseInt(requestMap.get("id")));
+					return CafeUtils.getResponseEntity("Product Status updated successfully", HttpStatus.OK);
+				} else {
+					return CafeUtils.getResponseEntity("Product id not found :/", HttpStatus.OK);
+				}
+			} else {
+				return CafeUtils.getResponseEntity(ImobilierConstents.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }
