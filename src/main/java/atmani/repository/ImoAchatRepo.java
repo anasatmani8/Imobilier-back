@@ -19,6 +19,9 @@ public interface ImoAchatRepo extends JpaRepository<ImoAchat, Integer> {
 	@Query(value = "SELECT * FROM imobilier.imo_achat where type='ACHAT' and available='true'", nativeQuery = true)
 	List<ImoAchat> getAllAchat();
 	
+	@Query(value = "SELECT * FROM imobilier.imo_achat where type='ACHAT'", nativeQuery = true)
+	List<ImoAchat> getAllAchatAdmin();
+	
 	@Query(value = "SELECT * FROM imobilier.imo_achat where type='LOCATION' and available='true'", nativeQuery = true)
 	List<ImoAchat> getAllLocation();
 	

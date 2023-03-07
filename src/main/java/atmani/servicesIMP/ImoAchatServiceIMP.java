@@ -36,7 +36,7 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 				return CafeUtils.getResponseEntity(ImobilierConstents.UNAUTHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
 			}
 
-		} catch (Exception ex) {
+		} catch (Exception ex) { 
 			ex.printStackTrace();
 		}
 		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -46,6 +46,16 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 		try {
 			
 			return new ResponseEntity<>(achatRepo.getAllAchat(), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	@Override
+	public ResponseEntity<List<ImoAchat>> getAllAchatsAdmin() {
+		try {
+			
+			return new ResponseEntity<>(achatRepo.getAllAchatAdmin(), HttpStatus.OK);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

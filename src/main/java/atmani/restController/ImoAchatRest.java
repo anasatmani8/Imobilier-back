@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import atmani.constents.ImobilierConstents;
 import atmani.model.ImageModel;
 import atmani.model.ImoAchat;
 import atmani.model.Type;
+import atmani.repository.ImoAchatRepo;
 import atmani.servicesIMP.ImoAchatServiceIMP;
 import atmani.utils.CafeUtils;
 import atmani.utils.EmailUtils;
@@ -37,6 +40,10 @@ public class ImoAchatRest {
 	
 	@Autowired
 	ImoAchatServiceIMP achatService;
+	
+	@Autowired
+	ImoAchatRepo achatRepo;
+	
 	@Autowired
 	EmailUtils emailUtils;
 	
@@ -114,6 +121,17 @@ public class ImoAchatRest {
 		}
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	@GetMapping(path = "/achatAdmin")
+	ResponseEntity<List<ImoAchat>> getAllAchatAdmin() {
+		try {
+			return achatService.getAllAchatsAdmin();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 	@GetMapping(path = "/location")
 	ResponseEntity<List<ImoAchat>> getAllLocation() {
 		try {
@@ -139,7 +157,11 @@ public class ImoAchatRest {
 		try {
 			System.out.println("1");
 			System.out.println(requestMap);
-			return achatService.updateStatus(requestMap);
+			int id = Integer.parseInt(requestMap.get("id"));
+			ImoAchat achat = achatRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+			achat.setAvailable(requestMap.get("available"));
+			achatRepo.save(achat);
+			return CafeUtils.getResponseEntity("Status updated successfully", HttpStatus.OK);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
