@@ -43,9 +43,14 @@ public class ImoAchatRest {
 	
 	@Autowired
 	ImoAchatRepo achatRepo;
-	
+	 
 	@Autowired
 	EmailUtils emailUtils;
+	
+	@GetMapping(path = "/details/{type}")
+	long getCount(@PathVariable String type) {
+		return achatRepo.countDetails(type);
+	}
 	
 	@PostMapping(path="/addAchat", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 	ResponseEntity<String> addAchat(@RequestPart("imoAchat") ImoAchat achat, @RequestPart("file") MultipartFile[] files) {
@@ -126,6 +131,16 @@ public class ImoAchatRest {
 	ResponseEntity<List<ImoAchat>> getAllAchatAdmin() {
 		try {
 			return achatService.getAllAchatsAdmin();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping(path = "/locationAdmin")
+	ResponseEntity<List<ImoAchat>> getAllLocatonAdmin() {
+		try {
+			return achatService.getAllLocationAdmin();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

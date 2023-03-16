@@ -22,11 +22,17 @@ public interface ImoAchatRepo extends JpaRepository<ImoAchat, Integer> {
 	@Query(value = "SELECT * FROM imobilier.imo_achat where type='ACHAT'", nativeQuery = true)
 	List<ImoAchat> getAllAchatAdmin();
 	
+	@Query(value = "SELECT * FROM imobilier.imo_achat where type='LOCATION'", nativeQuery = true)
+	List<ImoAchat> getAllLocationAdmin();
+	
 	@Query(value = "SELECT * FROM imobilier.imo_achat where type='LOCATION' and available='true'", nativeQuery = true)
 	List<ImoAchat> getAllLocation();
 	
 	@Modifying
 	@Query(value = "UPDATE imo_achat p SET p.available =:status WHERE p.id =:id", nativeQuery = true)
 	Integer updateStatus(@Param("status") String status, @Param("id") int id);
-
+	
+	//SELECT COUNT(*) FROM imo_achat WHERE type LIKE '%LOCATION%';
+	@Query(value = "SELECT COUNT(*) FROM imo_achat WHERE type LIKE %:type%", nativeQuery = true)
+	long countDetails(@Param("type") String status);
 }

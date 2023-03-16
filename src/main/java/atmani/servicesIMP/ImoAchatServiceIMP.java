@@ -52,10 +52,21 @@ public class ImoAchatServiceIMP implements ImoAchatService {
 		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	@Override
-	public ResponseEntity<List<ImoAchat>> getAllAchatsAdmin() {
+	public ResponseEntity<List<ImoAchat>> getAllAchatsAdmin() { 
 		try {
 			
 			return new ResponseEntity<>(achatRepo.getAllAchatAdmin(), HttpStatus.OK);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@Override
+	public ResponseEntity<List<ImoAchat>> getAllLocationAdmin() { 
+		try {
+			
+			return new ResponseEntity<>(achatRepo.getAllLocationAdmin(), HttpStatus.OK);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
