@@ -41,16 +41,16 @@ public class EmailUtils {
 		System.out.println(list.toString());
 		// message.setCc(getCcArray(list));
 
-		emailSender.send(message);
+		emailSender.send(message); 
 	}
 
 	public void forgotMail(String to, String subject, String password) throws MessagingException {
 		MimeMessage message = emailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		helper.setFrom("ssfhdrt@gmail.com");
+		helper.setFrom("anasatmani8@gmail.com");
 		helper.setTo(to);
 		helper.setSubject(subject);
-		String htmlMsg = "<p><b>Your Login details for Cafe Management System</b><br><b>Email: </b> " + to
+		String htmlMsg = "<p><b>Your Login details forMaroc Immo Consulting</b><br><b>Email: </b> " + to
 				+ " <br><b>Password: </b> " + password
 				+ "<br><a href=\"http://localhost:4200/\">Click here to login</a></p>";
 		message.setContent(htmlMsg, "text/html");

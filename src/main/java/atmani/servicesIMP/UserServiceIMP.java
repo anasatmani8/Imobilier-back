@@ -221,6 +221,7 @@ public class UserServiceIMP implements UserService {
 	@Override
 	public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
 		try {
+			System.out.println("test");
 			User user = userDao.findByEmail(requestMap.get("email"));
 			if (!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())) 
 				emailUtils.forgotMail(user.getEmail(), "Credentials by Maroc Immo Consulting", user.getPassword());

@@ -64,10 +64,17 @@ public class UserRest {
 		return null;
 	}
 	
-	@PostMapping("/forgotPassword")
+	@PostMapping("/forgetPassword")
 	public ResponseEntity<String> forgotPassword(@RequestBody(required = true) Map<String, String> requesMap) {
-		return null;
+		try {
+			
+			return userService.forgotPassword(requesMap);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return CafeUtils.getResponseEntity(ImobilierConstents.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+
 	
 
 }
